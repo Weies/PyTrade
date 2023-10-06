@@ -17,66 +17,6 @@ from keras.layers import LSTM, Dense
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
-def percent(per=""):
-    if len(per) > 1:
-        return float(per[0:-1])
-    else:
-        return 0.0
-
-
-class StockData:
-    def __init__(self):
-        self.time = []
-        self.day = []
-        self.open = []
-        self.high = []
-        self.low = []
-        self.close = []
-        self.rise = []
-        self.volume = []
-
-    def push(self, time, day, open, high, low, close, rise, volume):
-        self.time.append(time)
-        self.day.append(day)
-        self.open.append(open)
-        self.high.append(high)
-        self.low.append(low)
-        self.close.append(close)
-        self.rise.append(percent(rise))
-        self.volume.append(volume)
-
-    def better(self):
-        self.open = np.array(self.open, dtype=float)
-        self.high = np.array(self.high, dtype=float)
-        self.low = np.array(self.low, dtype=float)
-        self.close = np.array(self.close, dtype=float)
-        self.rise = np.array(self.rise, dtype=float)
-        self.volume = np.array(self.volume, dtype=float)
-
-    def part(self, n):
-        self.time = self.time[0:n]
-        self.day = self.day[0:n]
-        self.open = self.open[0:n]
-        self.high = self.high[0:n]
-        self.low = self.low[0:n]
-        self.close = self.close[0:n]
-        self.rise = self.rise[0:n]
-        self.volume = self.volume[0:n]
-
-
-data = StockData()
-
-# 打开CSV文件
-with open('test.csv', mode='r', encoding='utf-8') as csvfile:
-    # 创建一个CSV阅读器
-    csv_reader = csv.reader(csvfile)
-    next(csv_reader)
-    next(csv_reader)
-    for row in csv_reader:
-        data.push(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[8])
-    data.better()
-
-
 def MA(array=[], day=5):
     num_days = len(array)
     a = np.array([0.0 for i in range(num_days)])
@@ -113,12 +53,12 @@ def MACD(array=[]):
     return dif, dea, macd
 
 
-data.part(100)
-
+# data.part(-160)
+#
 # plt.plot(data.close, label="close")
-UB, M, BB = MACD(data.close)
-plt.plot(UB, label="UB")
-plt.plot(M, label="M")
-plt.plot(BB, label="BB")
-plt.legend()
-plt.show()
+# UB, M, BB = BOLL(data.close)
+# plt.plot(UB, label="UB")
+# plt.plot(M, label="M")
+# plt.plot(BB, label="BB")
+# plt.legend()
+# plt.show()
